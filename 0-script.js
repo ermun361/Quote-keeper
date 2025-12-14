@@ -1,8 +1,23 @@
 // 1.define variables to reference the DOM elements
 const quoteInput = document.getElementById('quote-text');
+
+
 const authorInput = document.getElementById('quote-author');
 const addQuoteButton = document.getElementById('add-quote-btn');
 const quotesList = document.getElementById('quotes-list');
+
+function saveQuoteToLocalStorage(quoteText, quoteAuthor) {
+    const quoteObject = {
+        text: quoteText,
+        author: quoteAuthor
+    };
+
+    const quoteJSON = JSON.stringify(quoteObject);
+    const uniqueKey = 'quote_' + Date.now(); // Unique key using timestamp
+
+
+    localStorage.setItem(uniqueKey, quoteJSON);
+}
 
 // 2.Implement the add quote functionality
 
@@ -17,14 +32,16 @@ function addQuote() {
         return; // stop the function if input is invalid
     }
 
+    // Save the quote to local storage
+    saveQuoteToLocalStorage(quoteText, quoteAuthor);
+
+
     // If the list currently has the "No quotes added yet" text, remove it
     // We check if the first child is a paragraph text (the placeholder)
     if (quotesList.querySelector('p')) {
     quotesList.innerHTML = '';
     }
    
-
-
 
     // Create the container div for the new quote card
     const quoteCard = document.createElement('div');
