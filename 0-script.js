@@ -1,11 +1,14 @@
-// 1.define variables to reference the DOM elements
+// ================================
+// 1. DOM ELEMENT REFERENCES
+// ================================
 const quoteInput = document.getElementById('quote-text');
-
-
 const authorInput = document.getElementById('quote-author');
 const addQuoteButton = document.getElementById('add-quote-btn');
 const quotesList = document.getElementById('quotes-list');
 
+// ================================
+// 2. SAVE QUOTE TO LOCAL STORAGE
+// ================================
 function saveQuoteToLocalStorage(quoteText, quoteAuthor) {
     const quoteObject = {
         text: quoteText,
@@ -13,72 +16,96 @@ function saveQuoteToLocalStorage(quoteText, quoteAuthor) {
     };
 
     const quoteJSON = JSON.stringify(quoteObject);
-    const uniqueKey = 'quote_' + Date.now(); // Unique key using timestamp
-
+    const uniqueKey = 'quote_' + Date.now();
 
     localStorage.setItem(uniqueKey, quoteJSON);
 }
 
-// 2.Implement the add quote functionality
+// ================================
+// 3. DISPLAY STORED QUOTES
+// ================================
+function displayStoredQuotes() {
+    quotesList.innerHTML = '';
 
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+
+        if (key.startsWith('quote_')) {
+            const storedQuote = JSON.parse(localStorage.getItem(key));
+            createQuoteCard(storedQuote.text, storedQuote.author, key);
+        }
+    }
+
+    // Placeholder if no quotes exist
+    if (quotesList.children.length === 0) {
+        const p = document.createElement('p');
+        p.textContent = 'No quotes added yet.';
+        quotesList.appendChild(p);
+    }
+}
+
+// ================================
+// 4. CREATE QUOTE CARD
+// ================================
+function createQuoteCard(text, author, key) {
+    const quoteCard = document.createElement('div');
+    quoteCard.classList.add('quote-card');
+
+    const blockquote = document.createElement('blockquote');
+    blockquote.textContent = text;
+
+    const authorText = document.createElement('div');
+    authorText.classList.add('author');
+    authorText.textContent = author;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Remove';
+    removeBtn.classList.add('remove-btn');
+
+    removeBtn.addEventListener('click', function () {
+        removeQuote(key);
+    });
+
+    quoteCard.append(blockquote, authorText, removeBtn);
+    quotesList.prepend(quoteCard);
+}
+
+// ================================
+// 5. REMOVE QUOTE
+// ================================
+function removeQuote(key) {
+    localStorage.removeItem(key);
+    displayStoredQuotes();
+}
+
+// ================================
+// 6. ADD QUOTE (MAIN ACTION)
+// ================================
 function addQuote() {
-    // get the input values
     const quoteText = quoteInput.value.trim();
     const quoteAuthor = authorInput.value.trim() || 'Unknown';
 
-    // validate input
-    if (quoteText ==='') {
+    if (quoteText === '') {
         alert('Please enter a quote.');
-        return; // stop the function if input is invalid
+        return;
     }
 
-    // Save the quote to local storage
     saveQuoteToLocalStorage(quoteText, quoteAuthor);
+    displayStoredQuotes();
 
-
-    // If the list currently has the "No quotes added yet" text, remove it
-    // We check if the first child is a paragraph text (the placeholder)
-    if (quotesList.querySelector('p')) {
-    quotesList.innerHTML = '';
-    }
-   
-
-    // Create the container div for the new quote card
-    const quoteCard = document.createElement('div');
-    quoteCard.classList.add('quote-card'); // use the class from your CSS
-
-    // Create the blockquote text element
-    const blockquote = document.createElement('blockquote');
-    blockquote.textContent = quoteText;
-
-    // Create the author element
-    const authorText = document.createElement('div');
-    authorText.classList.add('author');  //use the class from your CSS
-     // If author is empty, default to "Unknown", otherwise use the input
-    authorText.textContent = quoteAuthor === "" ? "Unknown" : quoteAuthor;
-
-    // Append the blockquote and author to the quote card
-    quoteCard.appendChild(blockquote);
-    quoteCard.appendChild(authorText);
-
-    // Append the quote card to the display section
-    // (Using prepend allows the newest quote to show at the top)
-    quotesList.prepend(quoteCard);
-
-    // Clear the input fields for the next entry
     quoteInput.value = '';
     authorInput.value = '';
-
 }
 
-// 3. Attach event listener to the button
+// ================================
+// 7. EVENT LISTENERS
+// ================================
 addQuoteButton.addEventListener('click', addQuote);
 
-// Optional: Allow pressing "Enter" inside the author field to trigger the add button
 authorInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         addQuote();
     }
-
 });
 
+document.addEventListener('DOMContentLoaded', displayStoredQuotes);
