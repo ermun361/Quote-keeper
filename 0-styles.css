@@ -114,14 +114,14 @@ hr {
     padding-left: 10px;
 }
 
-#quote-list {
+#quotes-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 /* Placeholder text style */
-#quote-list p {
+#quotes-list p {
     color: #777;
     font-style: italic;
     text-align: center;

@@ -19,9 +19,12 @@ function addQuote() {
 
     // If the list currently has the "No quotes added yet" text, remove it
     // We check if the first child is a paragraph text (the placeholder)
-    if (quoteList.children.length > 0 && quoteList.children[0].tagName === 'P') {
-        quoteList.innerHTML = '';
+    if (quotesList.querySelector('p')) {
+    quotesList.innerHTML = '';
     }
+   
+
+
 
     // Create the container div for the new quote card
     const quoteCard = document.createElement('div');
@@ -35,7 +38,7 @@ function addQuote() {
     const authorText = document.createElement('div');
     authorText.classList.add('author');  //use the class from your CSS
      // If author is empty, default to "Unknown", otherwise use the input
-    authorText.textContent = author === "" ? "Unknown" : author;
+    authorText.textContent = quoteAuthor === "" ? "Unknown" : quoteAuthor;
 
     // Append the blockquote and author to the quote card
     quoteCard.appendChild(blockquote);
@@ -43,7 +46,7 @@ function addQuote() {
 
     // Append the quote card to the display section
     // (Using prepend allows the newest quote to show at the top)
-    quoteList.prepend(quoteCard);
+    quotesList.prepend(quoteCard);
 
     // Clear the input fields for the next entry
     quoteInput.value = '';
