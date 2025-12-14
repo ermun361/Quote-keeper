@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote-Keeper</title>
+    <link rel="stylesheet" href="./0-styles.css">
+</head>
+<body>
+    <div class="container">
+         <header>
+        <h1>Quote-Keeper</h1>
+    </header>
+
+    <!-- Input-section -->
+     <div class="input-group">
+        <div class="form-control">
+            <label for="quote-text">Quote</label>
+            <input type="text" id="quote" name="quote" placeholder="Enter quote here...".rows="3">
+        </div>
+        <div class="form-control">
+            <label for="quote-author">Author</label>
+            <input type="text" id="quote-author" name="quote-author" placeholder="Enter author here...">
+        </div>
+        <button id="add-quote-btn" type="button">Add Quote</button>
+     </div>
+
+     <hr>
+
+     <!-- Display-section -->
+      <div class="display-section">
+        <h2>Stored Quotes</h2>
+          <!-- Quotes will be dynamically added here using JS -->
+        <div id="quotes-list">
+            <p>No quotes added yet.</p>
+          
+        </div>  
+      </div>
+    </div>
+   
+
+      <script src=""></script>
+
+ 
+</body>
+</html>
